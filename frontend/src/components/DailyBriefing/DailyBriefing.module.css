@@ -1,0 +1,134 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.date {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* Skeleton */
+.skeleton {
+  padding: var(--space-4) 0;
+}
+
+.recSkeleton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Summary Banner */
+.summaryBanner {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  background: linear-gradient(135deg, var(--color-green-50), var(--color-earth-50));
+  border: 1px solid var(--color-green-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+}
+
+[data-theme="dark"] .summaryBanner {
+  background: linear-gradient(135deg, var(--color-accent-light), #1e1a12);
+  border-color: var(--color-border);
+}
+
+.summaryIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.summaryText {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+  font-weight: 500;
+}
+
+/* Recommendations */
+.recommendationsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.recHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.recommendations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.recItem {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-4);
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.recItem:hover {
+  border-color: var(--color-green-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.recNumber {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: white;
+  font-size: var(--text-xs);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.recText {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.timestamp {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: right;
+}
