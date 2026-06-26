@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Space Mono', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         farm: {
@@ -34,13 +34,13 @@ export default {
         }
       },
       boxShadow: {
-        'brutal': '4px 4px 0px 0px rgba(28,25,23,1)',
-        'brutal-hover': '8px 8px 0px 0px rgba(28,25,23,1)',
-        'brutal-sm': '2px 2px 0px 0px rgba(28,25,23,1)',
+        'brutal': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'brutal-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'brutal-sm': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         // Legacy bento maps to brutal now
-        'bento': '4px 4px 0px 0px rgba(28,25,23,1)',
-        'bento-hover': '8px 8px 0px 0px rgba(28,25,23,1)',
-        'glow-green': '4px 4px 0px 0px rgba(16,185,129,1)',
+        'bento': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'bento-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'glow-green': '0 0 15px 0 rgba(16,185,129,0.5)',
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out',
