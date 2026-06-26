@@ -83,4 +83,15 @@ export const getHealth = async () => {
   return response.data
 }
 
+// === PROFILE SETTINGS ===
+export const getProfile = async () => {
+  const response = await API.get('/profile')
+  return response.data
+}
+
+export const saveProfile = async (settings) => {
+  const response = await API.put('/profile', settings)
+  return response.data
+}
+
 export default API

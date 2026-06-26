@@ -4,9 +4,22 @@ import { LayoutDashboard, MessageSquare, BookOpen, Sun, TrendingUp, Settings, Mi
 import CommandPalette from '../CommandPalette/CommandPalette'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '../../lib/utils'
+import { getProfile } from '../../services/api'
 
 export default function Layout() {
   const [isMobile, setIsMobile] = useState(false)
+  const [operatorName, setOperatorName] = useState('Operator')
+
+  const loadProfile = () =>
+    getProfile()
+      .then(d => { if (d.OPERATOR_NAME) setOperatorName(d.OPERATOR_NAME) })
+      .catch(() => {})
+
+  useEffect(() => {
+    loadProfile()
+    window.addEventListener('profile-updated', loadProfile)
+    return () => window.removeEventListener('profile-updated', loadProfile)
+  }, [])
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024)
@@ -81,10 +94,10 @@ export default function Layout() {
         {/* User profile snippet */}
         <div className="mt-4 p-3 rounded-xl bg-farm-canvas border-2 border-farm-muted flex items-center gap-3">
           <div className="w-10 h-10 bg-farm-tractor/20 rounded-full flex items-center justify-center text-sm font-bold text-farm-tractor">
-            RF
+            {operatorName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'OP'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-farm-soil truncate">Rahul Farmer</p>
+            <p className="text-sm font-bold text-farm-soil truncate">{operatorName}</p>
             <p className="text-xs font-medium text-farm-soil/60 truncate">Active Profile</p>
           </div>
         </div>
