@@ -6,6 +6,7 @@ class ChatAnalysis(BaseModel):
     issue: str
     risk: str
     recommendation: str
+    language: str = "en-US"
 
 class ChatResponse(BaseModel):
     query: str

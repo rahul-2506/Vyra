@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { staggerContainer, staggerItem } from '../../lib/animations'
 import { AlertCircle, FileText, CheckCircle2, Save, Share2, PlusCircle } from 'lucide-react'
 import { getRiskLevel, truncate } from '../../lib/utils'
+import Badge from './Badge'
 
 export default function AnalysisResultCard({ analysis, onSave, onShare, showActions = true }) {
   if (!analysis) return null

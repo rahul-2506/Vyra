@@ -17,7 +17,7 @@ export default function CustomCursor() {
     const disableTrails = localStorage.getItem('vyra_disable_trails') === 'true'
     setTrailsEnabled(!prefersReducedMotion && !disableTrails)
 
-    document.body.classList.add('custom-cursor-active')
+    // document.body.classList.add('custom-cursor-active') // Restored normal cursor
 
     const handleMouseMove = (e) => {
       const x = e.clientX
@@ -136,7 +136,7 @@ export default function CustomCursor() {
       window.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('click', handleClick)
-      document.body.classList.remove('custom-cursor-active')
+      // document.body.classList.remove('custom-cursor-active')
     }
   }, [])
 
@@ -282,16 +282,7 @@ export default function CustomCursor() {
         </div>
       ))}
 
-      <div 
-        className="fixed pointer-events-none z-[10000] -translate-x-[4px] -translate-y-[4px] transition-transform duration-200 ease-out"
-        style={{ 
-          left: position.x, 
-          top: position.y,
-          transform: `scale(${isClicking ? 0.85 : (hoverType ? 1.2 : 1)}) rotate(${hoverType ? '15deg' : '0deg'})`
-        }}
-      >
-        {renderCursorContent()}
-      </div>
+      {/* Render cursor SVG removed to restore normal cursor, but trails remain */}
     </>
   )
 }

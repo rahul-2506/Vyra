@@ -23,7 +23,7 @@ async def voice_query_endpoint(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="Could not detect speech in the audio file.")
         
         # 2. Send transcript to existing agricultural analysis service
-        analysis_data = analyze_farmer_query(transcript, "English")
+        analysis_data = analyze_farmer_query(transcript, "Auto")
         
         # Save memory
         try:
@@ -35,7 +35,8 @@ async def voice_query_endpoint(file: UploadFile = File(...)):
             crop=analysis_data.get("crop", "Unknown"),
             issue=analysis_data.get("issue", "Unknown"),
             risk=analysis_data.get("risk", "Unknown"),
-            recommendation=analysis_data.get("recommendation", "No recommendation available")
+            recommendation=analysis_data.get("recommendation", "No recommendation available"),
+            language=analysis_data.get("language", "en-US")
         )
         
         return VoiceQueryResponse(

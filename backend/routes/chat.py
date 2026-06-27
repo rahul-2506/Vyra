@@ -21,7 +21,8 @@ async def chat_endpoint(request: ChatRequest):
             crop=analysis_data.get("crop", "Unknown"),
             issue=analysis_data.get("issue", "Unknown"),
             risk=analysis_data.get("risk", "Unknown"),
-            recommendation=analysis_data.get("recommendation", "No recommendation available")
+            recommendation=analysis_data.get("recommendation", "No recommendation available"),
+            language=analysis_data.get("language", "en-US")
         )
         
         return ChatResponse(

@@ -4,6 +4,8 @@ from schemas.response_schema import FarmHistoryRecord, DailyBriefingResponse, Da
 from services.db_service import get_history, get_dashboard_summary
 from services.ai_service import generate_daily_briefing
 
+from config.settings import settings
+
 router = APIRouter()
 
 @router.get("/farm-history", response_model=List[FarmHistoryRecord])
@@ -25,7 +27,7 @@ async def dashboard_summary_endpoint():
 async def daily_briefing_endpoint():
     try:
         history = get_history(limit=5)
-        briefing = generate_daily_briefing(history)
+        briefing = generate_daily_briefing(history, settings.PREF_LANGUAGE)
         return DailyBriefingResponse(**briefing)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

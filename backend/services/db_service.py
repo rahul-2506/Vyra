@@ -3,8 +3,11 @@ import json
 from datetime import datetime
 import os
 
-# DB will be created in the backend folder
-DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "farm_memory.db")
+if os.environ.get("VERCEL"):
+    DB_FILE = "/tmp/farm_memory.db"
+else:
+    # DB will be created in the backend folder
+    DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "farm_memory.db")
 
 def get_connection():
     return sqlite3.connect(DB_FILE)

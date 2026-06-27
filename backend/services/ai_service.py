@@ -10,18 +10,21 @@ def analyze_farmer_query(message: str, language: str) -> dict:
     
     system_prompt = """You are Vyra, an agricultural AI assistant.
 Analyze farmer queries and return highly structured agricultural responses as valid JSON.
+IMPORTANT: You must respond in the exact same language as the user's query. If they speak Tamil, answer in Tamil. If Hindi, answer in Hindi.
+Include the identified ISO language code (e.g. 'ta-IN', 'hi-IN', 'en-US') as the 'language' field.
 
 Format your response EXACTLY like this:
 {
   "crop": "crop name",
   "issue": "identified issue",
   "risk": "risk level or potential damage",
-  "recommendation": "practical solution"
+  "recommendation": "practical solution",
+  "language": "ISO language code of your response"
 }
 
 Recommendations should be practical, concise, and farmer-friendly. Reply ONLY with valid JSON."""
 
-    user_prompt = f"Language: {language}\nQuery: {message}"
+    user_prompt = f"Target Language Constraint: {language}\nQuery: {message}"
 
     try:
         response = client.chat.completions.create(
@@ -42,12 +45,13 @@ Recommendations should be practical, concise, and farmer-friendly. Reply ONLY wi
             "crop": "Unknown",
             "issue": "Unable to determine",
             "risk": "Unknown",
-            "recommendation": "Please consult a local agricultural expert and try again."
+            "recommendation": "Please consult a local agricultural expert and try again.",
+            "language": "en-US"
         }
 
 from datetime import datetime
 
-def generate_daily_briefing(history: list) -> dict:
+def generate_daily_briefing(history: list, language: str = "en-US") -> dict:
     if not settings.GROQ_API_KEY:
         return {
             "date": datetime.now().strftime("%Y-%m-%d"),
@@ -61,7 +65,7 @@ def generate_daily_briefing(history: list) -> dict:
     current_date = datetime.now().strftime("%Y-%m-%d")
     
     system_prompt = f"""You are Vyra, a professional agricultural AI co-pilot.
-Generate a daily agricultural briefing.
+Generate a daily agricultural briefing in the requested language: {language}.
 Current date: {current_date}
 Recent farm history: {history_str}
 
@@ -102,13 +106,13 @@ Reply ONLY with valid JSON.
             ]
         }
 
-def generate_weather_advice(temperature: float, humidity: float, condition: str) -> str:
+def generate_weather_advice(temperature: float, humidity: float, condition: str, language: str = "en-US") -> str:
     if not settings.GROQ_API_KEY:
         return "Monitor your crops closely given current weather conditions."
         
     client = Groq(api_key=settings.GROQ_API_KEY)
     
-    system_prompt = "You are Vyra, an agricultural AI assistant. Provide a brief, one-sentence practical agricultural advice based on the current weather. Reply ONLY with the advice."
+    system_prompt = f"You are Vyra, an agricultural AI assistant. Provide a brief, one-sentence practical agricultural advice based on the current weather. Reply ONLY with the advice in the following language: {language}."
     user_prompt = f"Weather: {condition}, Temp: {temperature}C, Humidity: {humidity}%"
     
     try:

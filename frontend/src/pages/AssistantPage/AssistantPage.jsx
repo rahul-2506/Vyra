@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { staggerContainer, staggerItem, popIn } from '../../lib/animations'
 import { sendChatMessage, sendVoiceQuery } from '../../services/api'
+import { speakText } from '../../lib/tts'
 import AnalysisResultCard from '../../components/ui/AnalysisResultCard'
 import toast from 'react-hot-toast'
 import { cn } from '../../lib/utils'
@@ -83,7 +84,7 @@ export default function AssistantPage() {
     setIsTyping(true)
 
     try {
-      const response = await sendChatMessage(input)
+      const response = await sendChatMessage(input, 'Auto')
       // Build a readable text reply from the structured analysis
       const a = response.analysis
       const replyText = a
@@ -192,6 +193,13 @@ export default function AssistantPage() {
         analysis: a,
         timestamp: new Date().toISOString()
       }])
+      
+      // Read aloud if voice was used
+      if (a && a.language) {
+         speakText(a.recommendation || replyText, a.language)
+      } else {
+         speakText('Analysis complete.', 'en-US')
+      }
     } catch (err) {
       toast.error('Voice query failed: ' + err.message)
       setMessages(prev => [...prev, {
@@ -205,7 +213,7 @@ export default function AssistantPage() {
   }
 
   return (
-    <div className="grid grid-cols-12 gap-6 h-[calc(100vh-8rem)]">
+    <div className="grid grid-cols-12 gap-6 h-[calc(100vh-12rem)] lg:h-[calc(100vh-8rem)] min-h-[500px]">
       
       {/* Left Workspace Panel: Chat (Span 8) */}
       <div className="col-span-12 lg:col-span-8 flex flex-col h-full bg-white border border-stone-200/50 shadow-md rounded-3xl overflow-hidden">

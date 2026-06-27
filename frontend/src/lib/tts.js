@@ -11,8 +11,13 @@ export const speakText = (text, lang = 'en-US') => {
   
   // Try to find a voice that matches the requested language
   const voices = window.speechSynthesis.getVoices();
-  const voice = voices.find(v => v.lang.startsWith(lang)) || 
-                voices.find(v => v.lang.startsWith('en'));
+  const safeLang = lang || 'en-US';
+  const targetLangPrefix = safeLang.split('-')[0].toLowerCase();
+  
+  let voice = voices.find(v => v.lang && v.lang.toLowerCase() === safeLang.toLowerCase());
+  if (!voice) {
+    voice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(targetLangPrefix));
+  }
   
   if (voice) {
     utterance.voice = voice;

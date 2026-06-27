@@ -78,13 +78,13 @@ export default function SettingsPage() {
     GROQ_MODEL: 'llama-3.3-70b-versatile',
     GROQ_VISION_MODEL: 'llama-3.2-11b-vision-preview',
     GROQ_AUDIO_MODEL: 'whisper-large-v3',
+    PREF_LANGUAGE: 'en-US',
   })
 
   const [prefs, setPrefs] = useState({
     notifications: true,
     autoSync: true,
     dataSharing: false,
-    language: 'en',
     units: 'metric',
   })
 
@@ -340,9 +340,9 @@ export default function SettingsPage() {
                     <h3 className="text-sm font-bold text-farm-soil border-b border-stone-100 pb-3 mb-6 text-left">System Preferences</h3>
                     <SettingSelect
                       label="Language"
-                      value={prefs.language}
-                      onChange={v => handlePrefsChange('language', v)}
-                      options={[{ value: 'en', label: 'English (US)' }, { value: 'hi', label: 'Hindi' }, { value: 'te', label: 'Telugu' }]}
+                      value={profile.PREF_LANGUAGE}
+                      onChange={v => handleProfileChange('PREF_LANGUAGE', v)}
+                      options={[{ value: 'en-US', label: 'English (US)' }, { value: 'hi-IN', label: 'Hindi' }, { value: 'ta-IN', label: 'Tamil' }]}
                     />
                     <SettingSelect
                       label="Measurement Units"
