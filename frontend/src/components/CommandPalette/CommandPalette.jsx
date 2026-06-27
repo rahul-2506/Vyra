@@ -70,43 +70,42 @@ export default function CommandPalette() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-50 bg-farm-soil/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-stone-900/20 backdrop-blur-[2px]"
             onClick={() => setIsOpen(false)}
           />
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] px-4 pointer-events-none">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              initial={{ opacity: 0, scale: 0.98, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="w-full max-w-2xl bg-white border-4 border-farm-soil shadow-[8px_8px_0px_#1C1917] pointer-events-auto flex flex-col"
+              exit={{ opacity: 0, scale: 0.98, y: -5 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="w-full max-w-xl bg-white border border-stone-200 shadow-xl rounded-xl pointer-events-auto flex flex-col overflow-hidden"
             >
               {/* Sleek Search Header */}
-              <div className="p-4 flex items-center border-b-4 border-farm-soil bg-farm-sunburst relative">
-                <Search size={28} className="text-farm-soil absolute left-6" strokeWidth={3} />
+              <div className="p-3 flex items-center border-b border-stone-100 bg-white relative">
+                <Search size={18} className="text-farm-soil/40 absolute left-4" strokeWidth={2} />
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="EXECUTE COMMAND..."
+                  placeholder="Type a command or search..."
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="w-full bg-transparent text-xl font-black text-farm-soil placeholder-farm-soil/50 outline-none pl-14 pr-4 py-2 uppercase tracking-tight"
-                  style={{ fontFamily: "'Space Mono', monospace" }}
+                  className="w-full bg-transparent text-sm text-farm-soil placeholder-farm-soil/40 outline-none pl-10 pr-12 py-1.5 font-normal"
                 />
-                <div className="flex gap-1 border-2 border-farm-soil bg-white px-2 py-1 absolute right-4 shadow-[2px_2px_0px_#1C1917]">
-                  <span className="text-xs text-farm-soil font-black uppercase tracking-widest" style={{ fontFamily: "'Space Mono', monospace" }}>ESC</span>
+                <div className="flex items-center border border-stone-200 bg-white px-1.5 py-0.5 rounded text-[10px] text-farm-soil/40 absolute right-4">
+                  <span>ESC</span>
                 </div>
               </div>
 
               {/* Command List */}
-              <div className="max-h-[40vh] overflow-y-auto p-4 scroll-smooth bg-farm-canvas">
+              <div className="max-h-[40vh] overflow-y-auto p-2 scroll-smooth bg-white">
                 {filteredCommands.length === 0 ? (
-                  <div className="px-6 py-12 text-center text-sm font-bold uppercase text-farm-soil/60 tracking-widest">
+                  <div className="px-4 py-8 text-center text-sm text-farm-soil/40 font-normal">
                     No matching operations found
                   </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-0.5">
                     {filteredCommands.map((cmd, index) => {
                       const isSelected = index === selectedIndex
                       return (
@@ -117,16 +116,16 @@ export default function CommandPalette() {
                             setIsOpen(false)
                           }}
                           onMouseEnter={() => setSelectedIndex(index)}
-                          className={`w-full flex items-center gap-4 px-4 py-4 text-left transition-all duration-150 border-2 ${
+                          className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-lg transition-colors border-none outline-none ${
                             isSelected 
-                              ? 'bg-farm-tractor text-farm-soil border-farm-soil shadow-[4px_4px_0px_#1C1917] -translate-y-0.5' 
-                              : 'bg-white text-farm-soil border-transparent hover:border-farm-soil hover:shadow-[2px_2px_0px_#1C1917]'
+                              ? 'bg-stone-50 text-farm-soil font-medium' 
+                              : 'bg-white text-farm-soil/80 hover:bg-stone-50/50'
                           }`}
                         >
-                          <cmd.icon size={24} className="text-farm-soil" strokeWidth={isSelected ? 3 : 2} />
-                          <span className="font-bold text-sm tracking-widest uppercase" style={{ fontFamily: "'Space Mono', monospace" }}>{cmd.title}</span>
+                          <cmd.icon size={16} className={isSelected ? 'text-farm-tractor' : 'text-farm-soil/40'} strokeWidth={2} />
+                          <span className="text-sm">{cmd.title}</span>
                           {isSelected && (
-                            <span className="ml-auto text-[10px] font-black tracking-widest uppercase bg-white border-2 border-farm-soil px-2 py-1 shadow-[2px_2px_0px_#1C1917]" style={{ fontFamily: "'Space Mono', monospace" }}>Run ↵</span>
+                            <span className="ml-auto text-[10px] text-farm-soil/40 border border-stone-200 bg-white px-1.5 py-0.5 rounded">Enter ↵</span>
                           )}
                         </button>
                       )

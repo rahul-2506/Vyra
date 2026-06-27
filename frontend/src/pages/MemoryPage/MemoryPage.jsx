@@ -21,36 +21,36 @@ function HistoryEntry({ item }) {
       variants={staggerItem}
       layout
       className={cn(
-        'bg-white border-4 border-farm-soil p-0 overflow-hidden cursor-pointer group transition-all duration-300',
-        expanded ? 'shadow-brutal-hover -translate-y-1' : 'shadow-brutal hover:-translate-y-1 hover:shadow-brutal-hover'
+        'card p-0 overflow-hidden cursor-pointer group transition-all duration-300',
+        expanded ? 'shadow-md border-stone-200' : 'shadow-sm border-stone-200/50 hover:shadow-md hover:border-stone-200'
       )}
       onClick={() => setExpanded(p => !p)}
     >
-      <div className="flex items-stretch min-h-[100px]">
-        {/* Massive Risk Block */}
+      <div className="flex items-stretch min-h-[90px]">
+        {/* Risk Color Left Strip Indicator */}
         <div className={cn(
-          'w-6 md:w-8 flex-shrink-0 border-r-4 border-farm-soil',
+          'w-1.5 flex-shrink-0',
           risk === 'high' ? 'bg-farm-alert' : 
           risk === 'medium' ? 'bg-farm-sunburst' : 'bg-farm-tractor'
         )} />
         
         <div className="flex-1 p-5 md:p-6 flex flex-col justify-center">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <p className="text-xl md:text-2xl font-black text-farm-soil leading-tight uppercase" style={{ fontFamily: "'Space Mono', monospace" }}>
+              <p className="text-base font-semibold text-farm-soil leading-snug">
                 "{item.query}"
               </p>
-              <div className="flex items-center gap-3 mt-4 flex-wrap">
-                {a.crop && <Badge variant="surface" className="text-xs">🌾 {a.crop}</Badge>}
-                {a.issue && <Badge variant="surface" className="text-xs">🔍 {truncate(a.issue, 20)}</Badge>}
-                <Badge variant={risk === 'high' ? 'red' : risk === 'medium' ? 'amber' : 'green'} className="text-xs">
+              <div className="flex items-center gap-2 mt-3 flex-wrap">
+                {a.crop && <Badge variant="surface" className="text-[10px]">🌾 {a.crop}</Badge>}
+                {a.issue && <Badge variant="surface" className="text-[10px]">🔍 {truncate(a.issue, 20)}</Badge>}
+                <Badge variant={risk === 'high' ? 'red' : risk === 'medium' ? 'amber' : 'green'} className="text-[10px]">
                   {risk.toUpperCase()}
                 </Badge>
-                <span className="text-sm font-bold text-farm-soil/60 ml-2 uppercase" style={{ fontFamily: "'Space Mono', monospace" }}>{timeAgo(item.timestamp)}</span>
+                <span className="text-xs text-farm-soil/40 ml-2">{timeAgo(item.timestamp)}</span>
               </div>
             </div>
-            <div className="w-12 h-12 border-4 border-farm-soil bg-farm-canvas flex items-center justify-center flex-shrink-0 text-farm-soil group-hover:bg-farm-tractor transition-colors shadow-brutal-sm">
-              {expanded ? <ChevronUp size={24} strokeWidth={3} /> : <ChevronDown size={24} strokeWidth={3} />}
+            <div className="w-8 h-8 rounded-lg border border-stone-200 bg-stone-50/50 flex items-center justify-center flex-shrink-0 text-farm-soil/50 group-hover:bg-farm-tractor group-hover:text-white transition-colors">
+              {expanded ? <ChevronUp size={16} strokeWidth={2} /> : <ChevronDown size={16} strokeWidth={2} />}
             </div>
           </div>
 
@@ -62,19 +62,19 @@ function HistoryEntry({ item }) {
                 exit={{ opacity: 0, height: 0 }}
                 className="overflow-hidden"
               >
-                <div className="mt-6 pt-6 border-t-4 border-farm-soil border-dashed">
+                <div className="mt-4 pt-4 border-t border-dashed border-stone-200">
                   {a.recommendation && (
-                    <div className="bg-farm-sunburst/20 border-4 border-farm-soil p-5 shadow-brutal-sm">
-                      <h4 className="text-sm font-black uppercase tracking-widest text-farm-soil mb-3 flex items-center gap-2 border-b-4 border-farm-soil pb-2" style={{ fontFamily: "'Space Mono', monospace" }}>
-                        <FileText size={18} strokeWidth={3} /> Action Plan
+                    <div className="bg-farm-sunburst/5 border border-farm-sunburst/20 p-4 rounded-lg">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-farm-soil/75 mb-2 pb-1.5 border-b border-farm-sunburst/10 flex items-center gap-1.5">
+                        <FileText size={14} strokeWidth={2} /> Action Plan
                       </h4>
-                      <p className="text-base text-farm-soil leading-relaxed font-bold">
+                      <p className="text-sm text-farm-soil leading-relaxed font-medium">
                         {a.recommendation}
                       </p>
                     </div>
                   )}
-                  <div className="mt-5 flex gap-2">
-                    <span className="text-xs font-black text-farm-soil uppercase tracking-widest bg-farm-canvas border-2 border-farm-soil px-3 py-1 shadow-[2px_2px_0px_#1C1917]" style={{ fontFamily: "'Space Mono', monospace" }}>
+                  <div className="mt-4 flex gap-2">
+                    <span className="text-[10px] text-farm-soil/55 bg-stone-50 border border-stone-200 px-2 py-0.5 rounded">
                       Logged: {new Date(item.timestamp).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}
                     </span>
                   </div>
@@ -126,39 +126,38 @@ export default function MemoryPage() {
   })
 
   return (
-    <motion.div {...pageTransition}>
+    <motion.div {...pageTransition} className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4 bg-white border-4 border-farm-soil p-6 shadow-brutal">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 bg-white border border-stone-200/50 p-6 rounded-2xl shadow-sm">
         <div>
-          <span className="section-eyebrow border-none pl-0 text-farm-sunburst">INTELLIGENCE LOG</span>
-          <h1 className="section-title mb-0">FARM MEMORY</h1>
+          <span className="section-eyebrow border-none pl-0">INTELLIGENCE LOG</span>
+          <h1 className="section-title mb-0">Farm Memory</h1>
         </div>
         <button onClick={fetchHistory} disabled={isLoading} className="btn-primary">
-          <RefreshCw size={20} className={isLoading ? 'animate-spin' : ''} strokeWidth={3} /> REFRESH SYNC
+          <RefreshCw size={15} className={isLoading ? 'animate-spin' : ''} strokeWidth={2} /> Sync logs
         </button>
       </div>
 
       {/* Search + Filters */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
         {/* Search */}
-        <div className="lg:col-span-6 bg-white border-4 border-farm-soil shadow-[4px_4px_0px_#1C1917] flex items-center relative p-2">
-          <div className="bg-farm-tractor border-2 border-farm-soil w-12 h-12 flex items-center justify-center ml-2 shadow-[2px_2px_0px_#1C1917]">
-            <Search size={24} className="text-farm-soil" strokeWidth={3} />
+        <div className="lg:col-span-6 bg-white border border-stone-200 rounded-xl flex items-center relative p-1.5 shadow-sm">
+          <div className="pl-3 pr-1 text-stone-400">
+            <Search size={18} strokeWidth={2} />
           </div>
           <input
             type="text"
-            placeholder="SEARCH LOGS..."
+            placeholder="Search logs..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="flex-1 bg-transparent border-none py-4 px-4 text-xl font-black text-farm-soil placeholder-farm-soil/40 outline-none uppercase tracking-tighter"
-            style={{ fontFamily: "'Space Mono', monospace" }}
+            className="flex-1 bg-transparent border-none py-2 px-3 text-sm text-farm-soil placeholder-farm-soil/40 outline-none"
           />
         </div>
 
         {/* Filters */}
-        <div className="lg:col-span-6 bg-white border-4 border-farm-soil p-6 shadow-[4px_4px_0px_#1C1917] flex flex-col justify-center gap-4">
+        <div className="lg:col-span-6 bg-white border border-stone-200 p-4 rounded-xl shadow-sm flex flex-col justify-center gap-3.5">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <span className="text-xs font-black text-farm-soil uppercase tracking-widest w-16" style={{ fontFamily: "'Space Mono', monospace" }}>RISK</span>
+            <span className="text-[10px] font-semibold text-farm-soil/60 tracking-wider w-12 uppercase">Risk</span>
             <div className="flex gap-2 flex-wrap">
               {RISK_FILTERS.map(f => (
                 <button key={f} onClick={() => setRiskFilter(f)} className={`chip ${riskFilter === f ? 'chip-active' : ''}`}>{f}</button>
@@ -166,7 +165,7 @@ export default function MemoryPage() {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <span className="text-xs font-black text-farm-soil uppercase tracking-widest w-16" style={{ fontFamily: "'Space Mono', monospace" }}>TIME</span>
+            <span className="text-[10px] font-semibold text-farm-soil/60 tracking-wider w-12 uppercase">Time</span>
             <div className="flex gap-2 flex-wrap">
               {DATE_FILTERS.map(f => (
                 <button key={f} onClick={() => setDateFilter(f)} className={`chip ${dateFilter === f ? 'chip-active' : ''}`}>{f}</button>
@@ -178,20 +177,25 @@ export default function MemoryPage() {
 
       {/* Results */}
       {isLoading ? (
-        <div className="space-y-6">
-          {[1,2,3,4].map(i => <div key={i} className="skeleton h-32 w-full" />)}
+        <div className="space-y-4">
+          {[1,2,3,4].map(i => <div key={i} className="skeleton h-24 w-full" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="empty-state">
-          <div className="w-24 h-24 border-4 border-farm-soil bg-farm-canvas flex items-center justify-center shadow-brutal mb-6 transform -rotate-6">
-            <Search size={48} className="text-farm-soil/50" strokeWidth={3} />
+        <div className="card hover-magnetic border border-stone-200/50 flex flex-col items-center justify-center p-8 text-center bg-white">
+          <div className="w-14 h-14 bg-farm-leaf/10 rounded-2xl flex items-center justify-center text-farm-leaf mb-4 shadow-sm animate-float">
+            <Search size={24} strokeWidth={2.5} />
           </div>
-          <div className="empty-state-title">No records found</div>
-          <div className="empty-state-desc font-bold">Try adjusting your filters or search term.</div>
+          <h3 className="font-extrabold text-base text-farm-soil">No Logs Found</h3>
+          <p className="text-xs text-farm-soil/70 mt-1 max-w-sm">
+            We couldn't locate any activity records matching your current filters. Try resetting the text query or checking other activity types.
+          </p>
+          <div className="mt-4 pt-4 border-t border-dashed border-stone-200 w-full max-w-xs text-[11px] font-bold text-farm-tractor">
+            💡 Did you know? <span className="text-farm-soil/70 font-medium">Vyra voice logs are saved here automatically.</span>
+          </div>
         </div>
       ) : (
-        <motion.div variants={staggerContainer} initial="initial" animate="animate" className="space-y-6">
-          <div className="text-sm font-black text-farm-soil uppercase tracking-widest mb-4 inline-block bg-white border-2 border-farm-soil px-3 py-1 shadow-brutal-sm" style={{ fontFamily: "'Space Mono', monospace" }}>
+        <motion.div variants={staggerContainer} initial="initial" animate="animate" className="space-y-4">
+          <div className="text-[11px] font-medium text-farm-soil/60 tracking-wide bg-stone-50 border border-stone-200 px-3 py-1 rounded-full inline-block">
             Showing {filtered.length} entries
           </div>
           {filtered.map((item, i) => (

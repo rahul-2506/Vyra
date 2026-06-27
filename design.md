@@ -1,197 +1,91 @@
-# Neo-Brutalism UI Design System Guide
+# Premium Agritech Layout & Design Guide
 
-This document serves as the blueprint for recreating the Vyra Neo-Brutalism UI in any new React + Tailwind CSS project.
+This document serves as the guide for the Vyra interface. It documents design tokens, typography, visual hierarchy, layout rhythm, components, and animations.
 
 ## 1. Core Principles
-- **No Softness**: Replace all drop-shadows with solid block shadows (`#000` or `#fff`).
-- **High Contrast**: Use stark, pure web colors (Pure Yellow, Shocking Pink, Neon Green).
-- **Thick Borders**: Every interactive element should have a heavy border (`border-[3px]` or `border-[4px]`).
-- **Tactile Interactions**: Buttons shouldn't fade on hover; they should physically "depress" by translating down and right, losing their drop shadow to simulate a physical button press.
-- **Aggressive Typography**: Use uppercase letters for labels, strong font weights (`font-black`, `font-bold`), and mono-spaced fonts for headers.
+
+- **Visual Rhythm & Layout Hierarchy**: Break uniform, repetitive grids. Stagger modules using varying card spans (Span 4, 8, 12) to group high-contrast metrics alongside subtle sensor data.
+- **Layering & Depth**: Guide reading flow by stacking visual layers. Use `.glass-card` (frosted glass overlays) for telemetry readings, standard cards for content blocks, and `.clay-card` (double inner shadows) for highlighted recommendations or warnings.
+- **Sunrise color Palette**: Utilize an organic agricultural palette (Deep Forest Green, Leaf Green, Golden Wheat, Morning Teal, Soil Brown, Warm Cream) representing farmland during sunrise, avoiding over-saturated neon gaming colors.
+- **Subtle Micro-Interactions**: Hover transformations, soft scales, magnetic button properties, and clean progress arcs must provide functional telemetry details rather than literal decoration.
+- **Inter globally**: Enforce the clean sans-serif typeface `Inter` for display headers and body layouts, maintaining a professional enterprise feel.
 
 ---
 
-## 2. Dependencies
-To set up a new project with this UI, you will need:
-```bash
-npm install tailwindcss postcss autoprefixer framer-motion lucide-react
-```
+## 2. Design Tokens
+
+### Colors
+- **Canvas (Background)**: `#FCF9F2` (Warm Cream Farmland)
+- **Soil (Primary Text)**: `#2D2825` (Soft Charcoal)
+- **Tractor (Deep Forest Green)**: `#1B3B2B`
+- **Leaf (Fresh Green)**: `#2E7D32`
+- **Wheat (Golden Accent)**: `#E29A45`
+- **Yellow (Sunflower Yellow)**: `#F4B942`
+- **Alert (Clay Red)**: `#B8554B`
+- **Sky (Mineral Blue)**: `#508C9B`
+- **Teal (Morning Teal)**: `#3A7D80`
+- **Clay (Earth Brown)**: `#7D5139`
+- **Muted (Secondary Beige)**: `#EDE8DF`
+
+### Card Layers & Shadows
+- **Standard Card Shadow**: `0 2px 8px rgba(45, 40, 37, 0.05)`
+- **Glassmorphic Card Shadow**: `0 8px 32px 0 rgba(45, 40, 37, 0.04)`
+- **Claymorphic Green Shadow**: `inset -4px -4px 8px rgba(27, 59, 43, 0.15), inset 4px 4px 8px rgba(255, 255, 255, 0.6), 0 12px 24px -10px rgba(27, 59, 43, 0.12)`
+- **Neumorphic Control Shadow**: `3px 3px 6px #e4e2dd, -3px -3px 6px #ffffff`
+- **Neumorphic Inset Shadow**: `inset 2px 2px 5px #e4e2dd, inset -2px -2px 5px #ffffff`
 
 ---
 
-## 3. Typography
-Import these fonts in your main CSS file (`index.css`):
+## 3. Core Component Rules
+
+### Glassmorphic Cards
+Frosted glass overlays are configured for most metrics:
 ```css
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-```
-- **Primary (Body):** `Inter` (used for readable text, inputs, buttons).
-- **Display (Headers):** `Space Mono` (used for massive headers, numbers, and retro vibes).
-
----
-
-## 4. Tailwind Configuration (`tailwind.config.js`)
-Use this configuration to set up the pure brutalist colors and hard shadows.
-
-```javascript
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: 'class',
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Mono', 'monospace'],
-      },
-      colors: {
-        brutal: {
-          bg: 'var(--brutal-bg)',
-          text: 'var(--brutal-text)',
-          border: 'var(--brutal-border)',
-          surface: 'var(--brutal-surface)',
-          muted: 'var(--brutal-muted)',
-          
-          // Pure accent colors
-          yellow: '#FFE800',
-          pink: '#FF90E8',
-          green: '#BAFCA2',
-          blue: '#80D7FF',
-          orange: '#FF5722',
-        },
-      },
-      boxShadow: {
-        'brutal-sm': '2px 2px 0px 0px var(--brutal-border)',
-        'brutal':    '4px 4px 0px 0px var(--brutal-border)',
-        'brutal-lg': '8px 8px 0px 0px var(--brutal-border)',
-      },
-    },
-  },
-  plugins: [],
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(45, 40, 37, 0.04);
 }
 ```
 
----
-
-## 5. CSS Variables and Base Layers (`index.css`)
-Define the CSS variables to easily flip between light and dark brutalist modes.
-
+### Neumorphic Controls
+Select inputs, toggle sliders, and switch tracks utilize neumorphism:
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --brutal-bg: #F4F4F0;
-    --brutal-text: #111111;
-    --brutal-border: #000000;
-    --brutal-surface: #FFFFFF;
-    --brutal-muted: #E2E2E2;
-  }
-
-  .dark {
-    --brutal-bg: #1A1A1A;
-    --brutal-text: #FFFFFF;
-    --brutal-border: #FFFFFF;
-    --brutal-surface: #222222;
-    --brutal-muted: #333333;
-  }
-
-  body {
-    background-color: var(--brutal-bg);
-    color: var(--brutal-text);
-    font-weight: 500;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Mono', monospace;
-    @apply font-bold uppercase tracking-tight;
-  }
+.neumorphic-inset {
+  background: #FCF9F2;
+  box-shadow: inset 2px 2px 5px #e4e2dd, inset -2px -2px 5px #ffffff;
 }
+```
 
-@layer components {
-  /* Cards */
-  .card {
-    @apply bg-brutal-surface border-[3px] border-brutal-border p-5 shadow-brutal transition-all duration-150;
-  }
-  .card:hover {
-    @apply -translate-y-1 -translate-x-1 shadow-brutal-lg;
-  }
-
-  /* Buttons */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 border-[3px] border-brutal-border shadow-brutal cursor-pointer;
-  }
-  .btn:active:not(:disabled) {
-    @apply translate-x-1 translate-y-1 shadow-none;
-  }
-  .btn-primary { @apply btn px-5 py-3 bg-brutal-yellow text-black; }
-  
-  /* Inputs */
-  .input {
-    @apply w-full bg-brutal-surface border-[3px] border-brutal-border px-4 py-3 text-sm text-brutal-text outline-none transition-all duration-150 shadow-[2px_2px_0px_0px_var(--brutal-border)];
-  }
-  .input:focus {
-    @apply shadow-brutal bg-brutal-yellow text-black translate-x-[-2px] translate-y-[-2px];
-  }
-  .input::placeholder {
-    color: var(--brutal-text);
-    opacity: 0.5;
-  }
+### Claymorphic Highlight Zones
+High-priority alerts or AI recommendation banners utilize claymorphism:
+```css
+.clay-card-gold {
+  background: rgba(252, 246, 238, 0.85);
+  box-shadow: inset -4px -4px 8px rgba(125, 81, 57, 0.15), inset 4px 4px 8px rgba(255, 255, 255, 0.6), 0 12px 24px -10px rgba(125, 81, 57, 0.12);
 }
 ```
 
 ---
 
-## 6. Framer Motion Animations (`animations.js`)
-Neo-brutalism feels physical and clunky. Replace smooth easing curves with aggressive spring physics.
+## 4. Motion Guidelines
+
+Motion should reinforce transition continuity, loading progress, and parameter thresholds.
 
 ```javascript
 // lib/animations.js
-export const brutalistSpring = {
+export const calmSpring = {
   type: 'spring',
-  stiffness: 400,
-  damping: 25,
+  stiffness: 300,
+  damping: 30,
   mass: 1,
 }
 
-export const staggerContainer = {
-  animate: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } }
+export const pageTransition = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+  transition: { type: 'tween', ease: 'easeOut', duration: 0.2 },
 }
-
-export const staggerItem = {
-  initial: { opacity: 0, y: 20, rotate: -2 }, // Slight rotation adds quirkiness
-  animate: { opacity: 1, y: 0, rotate: 0 },
-  transition: brutalistSpring,
-}
-```
-
----
-
-## 7. Signature UI Elements
-
-### The "Press" Effect
-Whenever making a custom interactive element, apply this combination of classes to simulate a brutalist button press:
-```html
-<button className="border-[3px] border-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
-  Click Me
-</button>
-```
-
-### The Background Grid
-To add a "drafting paper" look to your main layout, apply this to the background wrapper:
-```html
-<div className="absolute inset-0 z-0 opacity-10 pointer-events-none" 
-     style={{ backgroundImage: 'radial-gradient(var(--brutal-text) 1.5px, transparent 1.5px)', backgroundSize: '24px 24px' }}>
-</div>
-```
-
-### The "Title Bar" Decorative Dots
-Used heavily in Command Palettes and Modals to mimic retro OS windows:
-```html
-<div className="h-4 bg-brutal-border w-full flex items-center px-2 gap-1.5 border-b-[4px] border-brutal-border">
-  <div className="w-2 h-2 bg-brutal-pink rounded-full" />
-  <div className="w-2 h-2 bg-brutal-yellow rounded-full" />
-  <div className="w-2 h-2 bg-brutal-green rounded-full" />
-</div>
 ```

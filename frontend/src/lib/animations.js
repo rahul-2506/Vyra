@@ -1,41 +1,41 @@
-export const bouncySpring = {
+export const calmSpring = {
   type: 'spring',
-  stiffness: 400,
-  damping: 15,
-  mass: 0.8,
+  stiffness: 300,
+  damping: 30,
+  mass: 1,
 }
 
-export const harshTween = {
+export const smoothTween = {
   type: 'tween',
-  ease: 'circOut',
+  ease: 'easeOut',
   duration: 0.2
 }
 
 export const pageTransition = {
-  initial: { opacity: 0, x: -20, y: 20 },
-  animate: { opacity: 1, x: 0, y: 0 },
-  exit: { opacity: 0, x: 20, y: -20 },
-  transition: bouncySpring,
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+  transition: smoothTween,
 }
 
 export const staggerContainer = {
   animate: {
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05
+      staggerChildren: 0.05,
+      delayChildren: 0.02
     }
   }
 }
 
 export const staggerItem = {
-  initial: { opacity: 0, y: 40, scale: 0.9 },
-  animate: { opacity: 1, y: 0, scale: 1 },
-  transition: bouncySpring,
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  transition: calmSpring,
 }
 
 export const popIn = {
-  initial: { opacity: 0, scale: 0.5, rotate: -5 },
-  animate: { opacity: 1, scale: 1, rotate: 0 },
-  exit: { opacity: 0, scale: 0.8, rotate: 5 },
-  transition: bouncySpring,
+  initial: { opacity: 0, scale: 0.98 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.98 },
+  transition: smoothTween,
 }
