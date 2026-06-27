@@ -12,35 +12,46 @@ export default {
       },
       colors: {
         farm: {
-          canvas: '#FDFBF7', // Off-white graph paper
-          soil: '#1C1917',   // Heavy almost-black
-          tractor: '#10B981', // John Deere style green
-          sunburst: '#F59E0B', // Bright yellow-orange
-          alert: '#EF4444',
-          sky: '#3B82F6',
-          muted: '#E7E5E4', // For empty states or secondary canvas
+          canvas: '#FCF9F2',   // Very soft warm cream off-white background
+          soil: '#2D2825',     // Warm dark charcoal/soil for text
+          tractor: '#114227',  // Rich vibrant deep forest green
+          forest: '#114227',   // Rich vibrant deep forest green
+          leaf: '#249B55',     // Fresh crisp leaf green
+          wheat: '#E28723',    // Rich golden wheat
+          sunburst: '#E28723', // Rich golden wheat accent
+          yellow: '#F5B041',   // Sunflower yellow
+          alert: '#C0392B',    // Rich terracotta alert red
+          sky: '#3498DB',      // Vibrant sky blue
+          teal: '#0E8388',     // Vibrant irrigation teal
+          clay: '#7D5139',     // Earth clay brown
+          muted: '#EDE8DF',    // Warm light beige for panels/dividers
         },
         // Mapping legacy vyra/signal colors so nothing breaks
         signal: {
-          green: '#10B981',
-          amber: '#F59E0B',
-          red: '#EF4444',
-          blue: '#3B82F6',
+          green: '#2E7D32',
+          amber: '#E29A45',
+          red: '#B8554B',
+          blue: '#508C9B',
         },
         slate: {
-          bg: '#FDFBF7',
+          bg: '#FCF9F2',
           surface: '#ffffff',
-          panel: '#FDFBF7',
+          panel: '#FCF9F2',
         }
       },
       boxShadow: {
-        'brutal': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'brutal-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'brutal-sm': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        // Legacy bento maps to brutal now
-        'bento': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'bento-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'glow-green': '0 0 15px 0 rgba(16,185,129,0.5)',
+        'brutal': '0 2px 8px rgba(45, 40, 37, 0.05)',
+        'brutal-hover': '0 6px 16px rgba(45, 40, 37, 0.08)',
+        'brutal-sm': '0 1px 2px rgba(45, 40, 37, 0.04)',
+        'bento': '0 2px 8px rgba(45, 40, 37, 0.05)',
+        'bento-hover': '0 6px 16px rgba(45, 40, 37, 0.08)',
+        'glow-green': '0 0 12px rgba(62, 92, 71, 0.08)',
+        'glass': '0 8px 32px 0 rgba(45, 40, 37, 0.04)',
+        'glass-hover': '0 12px 40px 0 rgba(45, 40, 37, 0.08)',
+        'clay-green': 'inset -4px -4px 8px rgba(27, 59, 43, 0.15), inset 4px 4px 8px rgba(255, 255, 255, 0.6), 0 12px 24px -10px rgba(27, 59, 43, 0.12)',
+        'clay-gold': 'inset -4px -4px 8px rgba(125, 81, 57, 0.15), inset 4px 4px 8px rgba(255, 255, 255, 0.6), 0 12px 24px -10px rgba(125, 81, 57, 0.12)',
+        'neumorphic': '3px 3px 6px #e4e2dd, -3px -3px 6px #ffffff',
+        'neumorphic-inset': 'inset 2px 2px 5px #e4e2dd, inset -2px -2px 5px #ffffff',
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out',
@@ -49,6 +60,10 @@ export default {
         'ticker': 'ticker 20s linear infinite',
         'glitch': 'glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite',
         'scanline': 'scanline 8s linear infinite',
+        'gradient-slow': 'gradientShift 15s ease infinite',
+        'radar-slow': 'radar-sweep 8s linear infinite',
+        'float': 'float 4s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -74,6 +89,22 @@ export default {
         scanline: {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(100%)' },
+        },
+        gradientShift: {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+        },
+        'radar-sweep': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { opacity: '0.6', filter: 'drop-shadow(0 0 5px rgba(46, 125, 50, 0.2))' },
+          '50%': { opacity: '1', filter: 'drop-shadow(0 0 15px rgba(46, 125, 50, 0.5))' },
         }
       }
     },

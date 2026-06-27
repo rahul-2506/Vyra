@@ -5,12 +5,25 @@ import { Activity, Droplets, Thermometer, AlertTriangle, ShieldCheck, Zap, Cloud
 import { getDashboardSummary, getWeather } from '../../services/api'
 import { pageTransition, staggerContainer, staggerItem } from '../../lib/animations'
 import toast from 'react-hot-toast'
+import TiltCard from '../../components/ui/TiltCard'
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState(null)
   const [weather, setWeather] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 })
   const navigate = useNavigate()
+
+  const handleMouseMoveHero = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    setMousePos({ x, y })
+  }
+
+  const handleMouseLeaveHero = () => {
+    setMousePos({ x: 50, y: 50 })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,67 +56,94 @@ export default function DashboardPage() {
 
   const hasIssues = summary?.last_issue && summary.last_issue !== 'Unknown' && summary.last_issue !== 'No issues recorded'
   const statusBgColor = hasIssues ? 'bg-farm-alert/10' : 'bg-farm-tractor/10'
-  const statusIcon = hasIssues ? <AlertTriangle size={28} className="text-farm-alert" /> : <ShieldCheck size={28} className="text-farm-tractor" />
+  const statusIcon = hasIssues ? <AlertTriangle size={28} className="text-farm-alert animate-breath" /> : <ShieldCheck size={28} className="text-farm-tractor animate-breath" />
 
   return (
     <motion.div {...pageTransition} className="pb-8 space-y-8">
-      {/* Voice CTA - Top Priority */}
-      <div className="bg-farm-tractor rounded-3xl p-8 shadow-xl text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[200px]">
-         <div className="absolute top-0 right-0 p-8 opacity-10">
-            <Mic size={200} />
+      {/* Voice CTA - Flagship Environmental Hero */}
+      <div 
+        onMouseMove={handleMouseMoveHero}
+        onMouseLeave={handleMouseLeaveHero}
+        className="bg-gradient-to-br from-farm-tractor via-[#142c1f] to-farm-teal rounded-[28px] p-8 shadow-xl text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[220px]"
+      >
+         <div className="absolute -right-10 -bottom-10 p-8 opacity-[0.07] text-white pointer-events-none">
+            <Mic size={240} className="animate-float" />
          </div>
-         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 relative z-10">Need Farm Assistance?</h2>
-         <p className="text-white/90 text-lg mb-8 relative z-10 max-w-lg mx-auto">
-            Tap the microphone to speak to Vyra. Ask about your crops, weather, or log recent activities.
-         </p>
+         <div 
+           className="absolute w-80 h-80 bg-farm-yellow/15 rounded-full blur-3xl pointer-events-none transition-all duration-300 ease-out"
+           style={{
+             left: `${mousePos.x}%`,
+             top: `${mousePos.y}%`,
+             transform: 'translate(-50%, -50%)'
+           }}
+         />
+         
+         {/* Sunrise over Farmland silhouettes */}
+         <div className="absolute inset-x-0 bottom-0 opacity-[0.16] pointer-events-none z-0">
+           <svg width="100%" height="80" viewBox="0 0 1000 80" preserveAspectRatio="none" fill="none" className="w-full">
+             <path d="M0,80 L1000,80 L1000,40 C750,10 600,60 350,30 C200,10 0,50 0,50 Z" fill="#E29A45" />
+             <path d="M0,80 L1000,80 L1000,55 C800,40 700,70 500,45 C300,20 150,60 0,60 Z" fill="#2E7D32" />
+           </svg>
+         </div>
+         
+         <div className="relative z-10 space-y-2">
+            <span className="text-[10px] font-bold tracking-widest text-farm-yellow bg-farm-yellow/10 border border-farm-yellow/20 px-2.5 py-1 rounded-full uppercase inline-block">
+               Interactive Voice Core
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">Need Farm Assistance?</h2>
+            <p className="text-white/80 text-sm md:text-base max-w-lg mx-auto font-normal">
+               Tap the microphone to speak to Vyra. Ask about your crops, weather, or log recent activities.
+            </p>
+         </div>
+
          <button 
            onClick={() => navigate('/assistant')}
-           className="relative z-10 bg-white text-farm-tractor hover:bg-farm-muted font-bold text-xl px-10 py-5 rounded-full flex items-center gap-3 shadow-lg transition-transform hover:scale-105"
+           className="relative z-10 mt-6 bg-white hover:bg-stone-50 text-farm-tractor font-bold text-sm tracking-wider px-8 py-4 rounded-xl flex items-center gap-2.5 shadow-md active:scale-95 transition-all hover:scale-105"
          >
-           <Mic size={28} />
+           <Mic size={20} className="text-farm-teal animate-pulse" />
            TAP TO SPEAK
          </button>
       </div>
-
+ 
       {/* Grid */}
       <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-12 gap-6">
         
-        {/* System Status - Span 12 or 4 */}
-        <motion.div variants={staggerItem} className={`col-span-12 md:col-span-6 lg:col-span-4 card ${statusBgColor} border-2 border-transparent`}>
+        {/* System Status - Accent Strip Gold */}
+        <motion.div variants={staggerItem} className={`col-span-12 md:col-span-6 lg:col-span-4 card accent-strip-gold ${statusBgColor} border-2 border-transparent`}>
           <div className="flex justify-between items-start mb-6">
-            <h3 className="text-sm font-bold text-farm-soil uppercase tracking-wide">System Status</h3>
+            <h3 className="text-xs font-bold text-farm-soil/60 uppercase tracking-wider">System Status</h3>
             {statusIcon}
           </div>
           <div className="flex items-baseline gap-2 mb-2">
-             <span className={`text-4xl font-bold tracking-tight ${hasIssues ? 'text-farm-alert' : 'text-farm-tractor'}`}>
+             <span className={`text-3xl font-extrabold tracking-tight ${hasIssues ? 'text-farm-alert' : 'text-farm-tractor'}`}>
                {hasIssues ? 'ATTENTION' : 'NOMINAL'}
              </span>
           </div>
-          <p className="text-sm text-farm-soil/70 font-medium">{summary?.total_queries || 0} Total Interactions Processed</p>
+          <p className="text-xs text-farm-soil/55 font-semibold">{summary?.total_queries || 0} Total Interactions Processed</p>
         </motion.div>
-
-        {/* Quick Env Stats - Span 12 or 8 */}
+ 
+        {/* Quick Env Stats */}
         <motion.div variants={staggerItem} className="col-span-12 md:col-span-6 lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="card flex flex-col justify-center items-center text-center p-4">
-            <Thermometer size={28} className="text-farm-sunburst mb-3" strokeWidth={2.5} />
-            <p className="text-2xl font-bold text-farm-soil mb-1">{weather?.temperature || '--'}°C</p>
-            <p className="text-xs font-semibold text-farm-soil/60">AVG TEMP</p>
-          </div>
-          <div className="card flex flex-col justify-center items-center text-center p-4">
-            <Droplets size={28} className="text-farm-sky mb-3" strokeWidth={2.5} />
-            <p className="text-2xl font-bold text-farm-soil mb-1">{weather?.humidity || '--'}%</p>
-            <p className="text-xs font-semibold text-farm-soil/60">HUMIDITY</p>
-          </div>
-          <div className="card flex flex-col justify-center items-center text-center p-4">
-            <CloudLightning size={28} className="text-farm-soil/70 mb-3" strokeWidth={2.5} />
-            <p className="text-lg font-bold text-farm-soil mb-1 truncate w-full">{weather?.condition || 'Unknown'}</p>
-            <p className="text-xs font-semibold text-farm-soil/60">FORECAST</p>
-          </div>
-          <div className="card flex flex-col justify-center items-center text-center p-4 bg-farm-tractor/10">
-            <Sprout size={28} className="text-farm-tractor mb-3" strokeWidth={2.5} />
-            <p className="text-2xl font-bold text-farm-tractor mb-1">OK</p>
-            <p className="text-xs font-semibold text-farm-tractor/80">SENSORS</p>
-          </div>
+          <TiltCard className="card hover-magnetic glow-gold flex flex-col justify-center items-center text-center p-4">
+            <Thermometer size={24} className="text-farm-wheat mb-3 animate-float" strokeWidth={2.5} />
+            <p className="text-xl font-extrabold text-farm-soil mb-1">{weather?.temperature || '--'}°C</p>
+            <p className="text-[10px] font-bold text-farm-soil/50 uppercase tracking-wider">AVG TEMP</p>
+          </TiltCard>
+          <TiltCard className="card hover-magnetic glow-teal flex flex-col justify-center items-center text-center p-4">
+            <Droplets size={24} className="text-farm-sky mb-3 animate-float" style={{ animationDelay: '1s' }} strokeWidth={2.5} />
+            <p className="text-xl font-extrabold text-farm-soil mb-1">{weather?.humidity || '--'}%</p>
+            <p className="text-[10px] font-bold text-farm-soil/50 uppercase tracking-wider">HUMIDITY</p>
+          </TiltCard>
+          <TiltCard className="card hover-magnetic flex flex-col justify-center items-center text-center p-4">
+            <CloudLightning size={24} className="text-farm-soil/60 mb-3 animate-breath" strokeWidth={2.5} />
+            <p className="text-base font-extrabold text-farm-soil mb-1 truncate w-full">{weather?.condition || 'Unknown'}</p>
+            <p className="text-[10px] font-bold text-farm-soil/50 uppercase tracking-wider">FORECAST</p>
+          </TiltCard>
+          <TiltCard className="card hover-magnetic accent-strip-green flex flex-col justify-center items-center text-center p-4">
+            <Sprout size={24} className="text-farm-leaf mb-3 animate-pulse" strokeWidth={2.5} />
+            <p className="text-xl font-extrabold text-farm-leaf mb-1">OK</p>
+            <p className="text-[10px] font-bold text-farm-soil/50 uppercase tracking-wider">SENSORS</p>
+          </TiltCard>
         </motion.div>
 
         {/* Recent Activity - Span 12 or 8 */}
