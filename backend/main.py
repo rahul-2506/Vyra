@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes import chat, weather, health, diagnosis, voice, memory, profile
+from routes import chat, weather, health, diagnosis, voice, memory, profile, market
 from config.settings import settings
 from services.db_service import init_db
 
@@ -37,6 +37,7 @@ app.include_router(diagnosis.router, tags=["Diagnosis"])
 app.include_router(voice.router, tags=["Voice"])
 app.include_router(memory.router, tags=["Memory"])
 app.include_router(profile.router, tags=["Profile"])
+app.include_router(market.router, tags=["Market"])
 
 @app.get("/")
 async def root():

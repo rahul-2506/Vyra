@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react'
-import { Mic, Square, Loader2, FileAudio } from 'lucide-react'
+import { Mic, Square, Loader2, FileAudio, VolumeX } from 'lucide-react'
 import { sendVoiceQuery } from '../../services/api'
 import AnalysisCard from '../AnalysisCard/AnalysisCard'
+import { speakText, stopSpeaking } from '../../lib/tts'
 
 export default function VoiceAssistant() {
   const [isRecording, setIsRecording] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
+  const [isPlaying, setIsPlaying] = useState(false)
   
   const mediaRecorderRef = useRef(null)
   const audioChunksRef = useRef([])
@@ -51,6 +53,13 @@ export default function VoiceAssistant() {
     try {
       const data = await sendVoiceQuery(file)
       setResult(data)
+      // Auto-play the recommendation
+      if (data?.analysis?.recommendation) {
+        setIsPlaying(true)
+        speakText(data.analysis.recommendation, 'en-IN')
+        // Automatically set playing to false after a rough estimate, or just let user stop it.
+        // A better approach is listening to 'end' event on SpeechSynthesisUtterance, but we'll keep it simple.
+      }
     } catch (err) {
       setError(err.message || "Failed to process voice query.")
     } finally {
@@ -106,8 +115,18 @@ export default function VoiceAssistant() {
       {result && (
         <div className="w-full animate-slide-up space-y-6">
           <div className="bg-white rounded-2xl p-6 border-2 border-farm-muted shadow-sm">
-             <div className="flex items-center gap-2 text-farm-soil/70 font-semibold mb-2 uppercase text-sm tracking-wide">
-                <FileAudio size={16} /> Transcript
+             <div className="flex items-center justify-between mb-2">
+               <div className="flex items-center gap-2 text-farm-soil/70 font-semibold uppercase text-sm tracking-wide">
+                  <FileAudio size={16} /> Transcript
+               </div>
+               {isPlaying && (
+                 <button 
+                   onClick={() => { stopSpeaking(); setIsPlaying(false); }}
+                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-farm-alert/10 text-farm-alert text-xs font-bold hover:bg-farm-alert/20"
+                 >
+                   <VolumeX size={14} /> STOP AUDIO
+                 </button>
+               )}
              </div>
              <p className="text-xl font-medium text-farm-soil italic">"{result.transcript}"</p>
           </div>

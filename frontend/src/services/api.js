@@ -94,4 +94,10 @@ export const saveProfile = async (settings) => {
   return response.data
 }
 
+// === MARKET PRICES ===
+export const getMarketPrices = async (location = 'Local Mandi') => {
+  const response = await API.get(`/market?location=${encodeURIComponent(location)}`)
+  return response.data
+}
+
 export default API

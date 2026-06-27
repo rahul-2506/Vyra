@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
-import { Activity, Droplets, Thermometer, AlertTriangle, ShieldCheck, Zap, CloudLightning, Sprout, ChevronRight, Clock, MessageSquare, Mic } from 'lucide-react'
-import { getDashboardSummary, getWeather } from '../../services/api'
+import { Activity, Droplets, Thermometer, AlertTriangle, ShieldCheck, Zap, CloudLightning, Sprout, ChevronRight, Clock, MessageSquare, Mic, Camera, TrendingUp } from 'lucide-react'
+import { getDashboardSummary, getWeather, sendCropDiagnosis, getMarketPrices } from '../../services/api'
 import { pageTransition, staggerContainer, staggerItem } from '../../lib/animations'
 import toast from 'react-hot-toast'
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState(null)
   const [weather, setWeather] = useState(null)
+  const [market, setMarket] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [summaryData, weatherData] = await Promise.all([
+        const [summaryData, weatherData, marketData] = await Promise.all([
           getDashboardSummary(),
-          getWeather('London')
+          getWeather('London'),
+          getMarketPrices()
         ])
         setSummary(summaryData)
         setWeather(weatherData)
+        setMarket(marketData)
       } catch (err) {
         toast.error('Failed to sync farm data')
       } finally {
@@ -54,15 +57,24 @@ export default function DashboardPage() {
          </div>
          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 relative z-10">Need Farm Assistance?</h2>
          <p className="text-white/90 text-lg mb-8 relative z-10 max-w-lg mx-auto">
-            Tap the microphone to speak to Vyra. Ask about your crops, weather, or log recent activities.
+            Tap the microphone to speak to Vyra, or use the camera to diagnose crop diseases instantly.
          </p>
-         <button 
-           onClick={() => navigate('/assistant')}
-           className="relative z-10 bg-white text-farm-tractor hover:bg-farm-muted font-bold text-xl px-10 py-5 rounded-full flex items-center gap-3 shadow-lg transition-transform hover:scale-105"
-         >
-           <Mic size={28} />
-           TAP TO SPEAK
-         </button>
+         <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4">
+           <button 
+             onClick={() => navigate('/assistant')}
+             className="bg-white text-farm-tractor hover:bg-farm-muted font-bold text-xl px-8 py-4 rounded-full flex items-center gap-3 shadow-lg transition-transform hover:scale-105"
+           >
+             <Mic size={28} />
+             TAP TO SPEAK
+           </button>
+           <button 
+             onClick={() => navigate('/scanner')}
+             className="bg-farm-sunburst text-farm-soil hover:bg-farm-sunburst/90 font-bold text-xl px-8 py-4 rounded-full flex items-center gap-3 shadow-lg transition-transform hover:scale-105"
+           >
+             <Camera size={28} />
+             DIAGNOSE CROP
+           </button>
+         </div>
       </div>
 
       {/* Grid */}
@@ -137,8 +149,37 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        {/* Alerts Box - Span 12 or 4 */}
-        <motion.div variants={staggerItem} className="col-span-12 lg:col-span-4 card bg-farm-soil text-white">
+        {/* Market Trends - Span 12 or 6 */}
+        <motion.div variants={staggerItem} className="col-span-12 lg:col-span-6 card">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-bold text-farm-soil flex items-center gap-2">
+               <TrendingUp size={20} className="text-farm-tractor" strokeWidth={2.5} /> Market Prices
+            </h3>
+            <span className="text-xs font-semibold text-farm-soil/60 bg-farm-muted px-2 py-1 rounded-full uppercase tracking-wide">
+              {market?.location || 'Local'}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+             {market?.prices?.map((item, i) => (
+                <div key={i} className="p-3 rounded-xl bg-farm-muted/30 border border-farm-muted/50 flex flex-col justify-between">
+                   <p className="font-semibold text-farm-soil/80 text-sm mb-1">{item.crop}</p>
+                   <div className="flex items-end justify-between">
+                     <p className="text-lg font-bold text-farm-soil">₹{item.price}</p>
+                     <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${
+                       item.trend === 'up' ? 'text-farm-tractor bg-farm-tractor/10' : 
+                       item.trend === 'down' ? 'text-farm-alert bg-farm-alert/10' : 
+                       'text-farm-soil/60 bg-farm-muted'
+                     }`}>
+                       {item.change}
+                     </span>
+                   </div>
+                </div>
+             ))}
+          </div>
+        </motion.div>
+
+        {/* Alerts Box - Span 12 or 6 (changed from 4) */}
+        <motion.div variants={staggerItem} className="col-span-12 lg:col-span-6 card bg-farm-soil text-white">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold">Latest Issue</h3>
             <span className={`px-3 py-1 rounded-full text-xs font-bold ${hasIssues ? 'bg-farm-alert text-white' : 'bg-farm-tractor text-white'}`}>
